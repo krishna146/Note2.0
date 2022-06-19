@@ -7,13 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.note.databinding.FragmentRegisterBinding
 import com.example.note.models.User
 import com.example.note.models.UserRequest
 import com.example.note.utils.Constants
+import com.example.note.utils.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +48,27 @@ class RegisterFragment : Fragment() {
 
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        authViewModel.userResponseLiveData.observe(viewLifecycleOwner) {networkResult ->
+            binding.progressBar.isVisible = false
+            when(networkResult){
+                is NetworkResult.Error ->{
+                    binding.txtError.text = networkResult.message
+                }
+                is NetworkResult.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+                is NetworkResult.Success -> {
+                    //TODO : Saving Token
+                    findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
+
+                }
+            }
+
+        }
     }
 
     override fun onDestroyView() {

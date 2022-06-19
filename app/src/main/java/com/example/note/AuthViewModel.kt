@@ -1,21 +1,28 @@
 package com.example.note
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.note.models.UserRequest
+import com.example.note.models.UserResponse
 import com.example.note.repository.UserRepository
+import com.example.note.utils.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(private val userRepository: UserRepository) :ViewModel() {
-    fun registerUser(userRequest: UserRequest){
+class AuthViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
+    val userResponseLiveData: LiveData<NetworkResult<UserResponse>>
+        get() = userRepository.userResponseLiveData
+
+    fun registerUser(userRequest: UserRequest) {
         viewModelScope.launch {
             userRepository.registerUser(userRequest)
         }
     }
-    fun loginUser(userRequest: UserRequest){
+
+    fun loginUser(userRequest: UserRequest) {
         viewModelScope.launch {
             userRepository.loginUser(userRequest)
         }

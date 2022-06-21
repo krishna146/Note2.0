@@ -1,4 +1,4 @@
-package com.example.note
+package com.example.note.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.note.R
 import com.example.note.databinding.FragmentLoginBinding
 import com.example.note.models.UserRequest
 

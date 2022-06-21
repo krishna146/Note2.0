@@ -1,4 +1,4 @@
-package com.example.note
+package com.example.note.view
 
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import com.example.note.R
 import com.example.note.databinding.FragmentRegisterBinding
 import com.example.note.models.User
 import com.example.note.models.UserRequest

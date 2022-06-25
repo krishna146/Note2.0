@@ -78,6 +78,14 @@ class LoginFragment : Fragment() {
         return validateCredentials(userRequest, true)
     }
 
+    override fun onStart() {
+        super.onStart()
+        authViewModel.getSession { it ->
+            it?.let {
+                findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
+            }
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

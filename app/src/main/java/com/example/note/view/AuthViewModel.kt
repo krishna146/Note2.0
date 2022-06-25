@@ -27,4 +27,12 @@ class AuthViewModel @Inject constructor(private val userRepository: UserReposito
             userRepository.loginUser(userRequest)
         }
     }
+    fun getSession(result: (token : String?) -> Unit){
+        userRepository.getSession {
+            result(it)
+        }
+    }
+    fun logOut(result: () -> Unit){
+        userRepository.logout(result)
+    }
 }

@@ -1,13 +1,17 @@
 package com.example.note.di
 
+import com.example.note.api.AuthInterceptor
+import com.example.note.api.NotesApi
 import com.example.note.api.UserApi
 import com.example.note.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -15,16 +19,27 @@ import javax.inject.Singleton
 class NetworkModule {
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit {
+    fun provideRetrofitBuilder(): Retrofit.Builder {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(BASE_URL)
-            .build()
     }
 
     @Singleton
     @Provides
-    fun provideUserApi(retrofit: Retrofit): UserApi {
-        return retrofit.create(UserApi::class.java)
+    fun provideUserApi(retrofitBuilder: Retrofit.Builder): UserApi {
+        return retrofitBuilder.build().create(UserApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotesApi(retrofitBuilder: Retrofit.Builder, okHttpClient: OkHttpClient): NotesApi {
+        return retrofitBuilder.client(okHttpClient).build().create(NotesApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
+        return OkHttpClient.Builder().addInterceptor(authInterceptor).build()
     }
 }

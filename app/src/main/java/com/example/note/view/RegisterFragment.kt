@@ -70,12 +70,20 @@ class RegisterFragment : Fragment() {
                     binding.progressBar.isVisible = true
                 }
                 is NetworkResult.Success -> {
-                    //TODO : Saving Token
                     findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
 
                 }
             }
 
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        authViewModel.getSession {
+            it?.let {
+                findNavController().navigate(R.id.action_registerFragment_to_mainFragment)
+            }
         }
     }
 

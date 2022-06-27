@@ -13,6 +13,7 @@ import com.example.note.databinding.FragmentRegisterBinding
 import com.example.note.models.UserRequest
 import com.example.note.utils.NetworkResult
 import com.example.note.utils.validateCredentials
+import com.example.note.viewmodel.AuthViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

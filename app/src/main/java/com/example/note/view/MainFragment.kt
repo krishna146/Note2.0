@@ -9,13 +9,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.note.R
 import com.example.note.adapter.NoteAdapter
 import com.example.note.databinding.FragmentMainBinding
+import com.example.note.models.NoteResponse
 import com.example.note.utils.Constants.TAG
 import com.example.note.utils.NetworkResult
 import com.example.note.viewmodel.AuthViewModel
 import com.example.note.viewmodel.NoteViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -34,7 +38,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
-        noteAdapter = NoteAdapter()
+        noteAdapter = NoteAdapter(::onNoteClicked)
         return binding.root
     }
 
@@ -45,6 +49,9 @@ class MainFragment : Fragment() {
         binding.noteList.adapter = noteAdapter
         noteViewModel.getNotes()
         observers()
+        binding.addNote.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_noteFragment)
+        }
     }
 
     private fun observers() {
@@ -65,7 +72,12 @@ class MainFragment : Fragment() {
             }
         }
     }
+    private fun onNoteClicked(noteResponse: NoteResponse){
+        val bundle = Bundle()
+        bundle.putString("note", Gson().toJson(noteResponse))
+        findNavController().navigate(R.id.action_mainFragment_to_noteFragment, bundle)
 
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

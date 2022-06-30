@@ -52,6 +52,12 @@ class MainFragment : Fragment() {
         binding.addNote.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_noteFragment)
         }
+        binding.btnLogout.setOnClickListener {
+            authViewModel.logOut {
+                findNavController().navigate(R.id.action_mainFragment_to_registerFragment)
+
+            }
+        }
     }
 
     private fun observers() {
@@ -72,12 +78,14 @@ class MainFragment : Fragment() {
             }
         }
     }
-    private fun onNoteClicked(noteResponse: NoteResponse){
+
+    private fun onNoteClicked(noteResponse: NoteResponse) {
         val bundle = Bundle()
         bundle.putString("note", Gson().toJson(noteResponse))
         findNavController().navigate(R.id.action_mainFragment_to_noteFragment, bundle)
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
